@@ -24,6 +24,7 @@ const copy = {
     sent: 'Merci, votre message a bien été envoyé.',
     rateLimited: 'Veuillez patienter une minute avant d’envoyer un nouveau message.',
     captchaRequired: 'Validez la vérification anti-spam avant l’envoi.',
+    captchaLoading: 'Chargement de la vérification…',
     captchaMissing: 'La vérification anti-spam doit encore être configurée.',
     captchaError: 'La vérification anti-spam n’a pas pu être chargée. Réessayez.',
     error: 'Impossible d’envoyer le message. Réessayez ou contactez-moi par e-mail.',
@@ -42,6 +43,7 @@ const copy = {
     sent: 'Thank you, your message has been sent.',
     rateLimited: 'Please wait one minute before sending another message.',
     captchaRequired: 'Please complete the anti-spam verification before sending.',
+    captchaLoading: 'Loading verification…',
     captchaMissing: 'The anti-spam verification still needs to be configured.',
     captchaError: 'The anti-spam verification could not be loaded. Please try again.',
     error: 'Your message could not be sent. Please try again or contact me by email.',
@@ -183,6 +185,7 @@ export default function ContactBanner() {
           <Recaptcha
             key={recaptchaKey}
             siteKey={recaptchaSiteKey}
+            loadingLabel={t.captchaLoading}
             onToken={(token) => {
               setRecaptchaToken(token);
               setRecaptchaError(false);

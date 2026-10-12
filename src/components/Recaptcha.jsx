@@ -1,39 +1,72 @@
 import { useEffect, useRef, useState } from 'react';
 
-const RECAPTCHA_SCRIPT_URL = 'https://www.google.com/recaptcha/api.js?render=explicit';
+const RECAPTCHA_SCRIPT_SOURCES = [
+  'https://www.google.com/recaptcha/api.js?render=explicit',
+  'https://www.recaptcha.net/recaptcha/api.js?render=explicit',
+];
 
 let scriptPromise;
 
+function loadScript(source) {
+  if (window.grecaptcha?.render) return Promise.resolve(window.grecaptcha);
+
+  const scriptId = `recaptcha-api-${source.includes('recaptcha.net') ? 'fallback' : 'google'}`;
+  const existingScript = document.getElementById(scriptId);
+
+  return new Promise((resolve, reject) => {
+    const script = existingScript ?? document.createElement('script');
+
+    const rejectLoad = () => {
+      script.remove();
+      reject(new Error(`Impossible de charger reCAPTCHA depuis ${new URL(source).hostname}.`));
+    };
+
+    script.addEventListener(
+      'load',
+      () => {
+        if (window.grecaptcha?.render) {
+          resolve(window.grecaptcha);
+          return;
+        }
+
+        rejectLoad();
+      },
+      { once: true },
+    );
+    script.addEventListener('error', rejectLoad, { once: true });
+
+    if (!existingScript) {
+      script.id = scriptId;
+      script.src = source;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  });
+}
+
 function loadRecaptcha() {
-  if (window.grecaptcha) return Promise.resolve(window.grecaptcha);
+  if (window.grecaptcha?.render) return Promise.resolve(window.grecaptcha);
 
   if (!scriptPromise) {
-    scriptPromise = new Promise((resolve, reject) => {
-      const existingScript = document.querySelector(`script[src="${RECAPTCHA_SCRIPT_URL}"]`);
-      const script = existingScript ?? document.createElement('script');
+    const [primarySource, fallbackSource] = RECAPTCHA_SCRIPT_SOURCES;
 
-      script.addEventListener('load', () => resolve(window.grecaptcha), { once: true });
-      script.addEventListener(
-        'error',
-        () => reject(new Error('Impossible de charger reCAPTCHA.')),
-        {
-          once: true,
-        },
+    scriptPromise = loadScript(primarySource).catch((primaryError) => {
+      console.warn(
+        'Chargement reCAPTCHA via Google impossible, utilisation du secours.',
+        primaryError,
       );
-
-      if (!existingScript) {
-        script.src = RECAPTCHA_SCRIPT_URL;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-      }
+      return loadScript(fallbackSource);
     });
   }
 
-  return scriptPromise;
+  return scriptPromise.catch((error) => {
+    scriptPromise = undefined;
+    throw error;
+  });
 }
 
-export default function Recaptcha({ siteKey, onToken, onError }) {
+export default function Recaptcha({ siteKey, onToken, onError, loadingLabel }) {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
   const onTokenRef = useRef(onToken);
@@ -57,14 +90,17 @@ export default function Recaptcha({ siteKey, onToken, onError }) {
           sitekey: siteKey,
           callback: (token) => onTokenRef.current(token),
           'expired-callback': () => onTokenRef.current(''),
-          'error-callback': () => onErrorRef.current(),
+          'error-callback': () =>
+            onErrorRef.current(new Error('La vérification reCAPTCHA a échoué.')),
         });
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Erreur de chargement de reCAPTCHA.', error);
+
         if (!cancelled) {
           setLoading(false);
-          onErrorRef.current();
+          onErrorRef.current(error);
         }
       });
 
@@ -79,7 +115,7 @@ export default function Recaptcha({ siteKey, onToken, onError }) {
 
   return (
     <div className="recaptcha-control" aria-live="polite">
-      {loading && <span className="recaptcha-loading">Chargement de la vérification…</span>}
+      {loading && <span className="recaptcha-loading">{loadingLabel}</span>}
       <div ref={containerRef} />
     </div>
   );
