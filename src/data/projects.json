@@ -1,0 +1,11 @@
+[
+  { "id": "sfx-evat", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "sfx-eguce", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "sfx-predouane", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "payamafta", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "pethercorp", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "gestion-collectes", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "mybesthealth", "type": "entreprise", "status": "confidentiel", "url": null },
+  { "id": "todo-list", "type": "personnel", "status": "hors_ligne", "url": null },
+  { "id": "suivi-techniciens", "type": "entreprise", "status": "confidentiel", "url": null }
+]
