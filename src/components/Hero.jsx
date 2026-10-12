@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Code2, GitBranch, Layers3, Mail, MapPin, Server } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import heroImg from '../assets/hero.png';
+import heroTwoImg from '../assets/hero2.jpg';
+import heroThreeImg from '../assets/hero3.jpg';
+import { reveal, revealViewport, stagger } from './motionPresets';
 
 const copy = {
   fr: {
-    eyebrow: 'DÉVELOPPEUR FULL-STACK · DOUALA, CAMEROUN',
+    eyebrow: 'DÉVELOPPEUR - RUPHIN GASSI',
     lead: 'Je transforme vos idées en',
     blue: 'produits digitaux',
     green: 'solides.',
@@ -22,7 +26,7 @@ const copy = {
     ],
   },
   en: {
-    eyebrow: 'FULL-STACK DEVELOPER · DOUALA, CAMEROON',
+    eyebrow: 'DEVELOPER - RUPHIN GASSI',
     lead: 'I turn ideas into',
     blue: 'digital products',
     green: 'that last.',
@@ -42,6 +46,8 @@ const copy = {
 const profiles = [
   {
     role: 'Full-stack developer',
+    image: heroImg,
+    imagePosition: 'center 10%',
     details: [
       [MapPin, 'Douala, Cameroun'],
       [Mail, 'gassiruphin@gmail.com'],
@@ -49,6 +55,8 @@ const profiles = [
   },
   {
     role: 'Front-end engineer',
+    image: heroTwoImg,
+    imagePosition: 'center 42%',
     details: [
       [Code2, 'React.js · JavaScript'],
       [MapPin, 'Douala, Cameroun'],
@@ -56,13 +64,15 @@ const profiles = [
   },
   {
     role: 'Back-end & API developer',
+    image: heroThreeImg,
+    imagePosition: 'center 32%',
     details: [
       [Server, 'C# · Node.js · SQL Server'],
       [GitBranch, 'Azure DevOps · CI/CD'],
     ],
   },
 ];
-export default function Hero() {
+export default function Hero({ shouldAnimate }) {
   const { lang } = useLanguage();
   const t = copy[lang];
   const [active, setActive] = useState(0);
@@ -74,13 +84,22 @@ export default function Hero() {
   return (
     <>
       <section className="hero section" id="home">
-        <div className="hero-copy">
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h1>
+        <motion.div
+          className="hero-copy"
+          variants={stagger}
+          initial="hidden"
+          animate={shouldAnimate ? 'visible' : 'hidden'}
+        >
+          <motion.p className="eyebrow" variants={reveal}>
+            {t.eyebrow}
+          </motion.p>
+          <motion.h1 variants={reveal}>
             {t.lead} <span className="blue">{t.blue}</span> <span className="green">{t.green}</span>
-          </h1>
-          <p className="hero-intro">{t.intro}</p>
-          <div className="button-row">
+          </motion.h1>
+          <motion.p className="hero-intro" variants={reveal}>
+            {t.intro}
+          </motion.p>
+          <motion.div className="button-row" variants={reveal}>
             <a className="button primary" href="#projects">
               {t.work}
               <ArrowRight size={18} />
@@ -89,10 +108,17 @@ export default function Hero() {
               {t.contact}
               <ArrowRight size={18} />
             </a>
-          </div>
-          <p className="small-note">{t.note}</p>
-        </div>
-        <div className="hero-visual">
+          </motion.div>
+          <motion.p className="small-note" variants={reveal}>
+            {t.note}
+          </motion.p>
+        </motion.div>
+        <motion.div
+          className="hero-visual"
+          initial={{ opacity: 0, y: 14 }}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+          transition={{ duration: 0.42, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="grid-pattern" />
           {profiles.map((profile, index) => {
             const position = (index - active + 3) % 3;
@@ -100,7 +126,11 @@ export default function Hero() {
             return (
               <article className={`portrait-card carousel-card ${slot}`} key={profile.role}>
                 <div className="portrait-wrap">
-                  <img src={heroImg} alt={`Ruphin Gassi, ${profile.role}`} />
+                  <img
+                    src={profile.image}
+                    alt={`Ruphin Gassi, ${profile.role}`}
+                    style={{ objectPosition: profile.imagePosition }}
+                  />
                 </div>
                 <div className="profile-info">
                   <h2>Ruphin Gassi</h2>
@@ -125,13 +155,19 @@ export default function Hero() {
               />
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
-      <section className="proof-strip">
+      <motion.section
+        className="proof-strip"
+        variants={stagger}
+        initial="hidden"
+        whileInView={shouldAnimate ? 'visible' : 'hidden'}
+        viewport={revealViewport}
+      >
         {t.proof.map((item, index) => {
           const Icon = icons[index];
           return (
-            <article key={item[0]}>
+            <motion.article key={item[0]} variants={reveal}>
               <span className="proof-icon">
                 <Icon />
               </span>
@@ -139,10 +175,10 @@ export default function Hero() {
                 <h3>{item[0]}</h3>
                 <p>{item[1]}</p>
               </div>
-            </article>
+            </motion.article>
           );
         })}
-      </section>
+      </motion.section>
     </>
   );
 }

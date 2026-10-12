@@ -10,8 +10,26 @@ import {
   Search,
   X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import metadata from '../data/projects.json';
+import { indexedReveal, reveal, revealViewport } from './motionPresets';
+
+const projectScreenshotModules = import.meta.glob('../assets/projects/*.{avif,jpeg,jpg,png,webp}', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+});
+
+const projectScreenshots = Object.fromEntries(
+  Object.entries(projectScreenshotModules).map(([path, source]) => [
+    path
+      .split('/')
+      .pop()
+      .replace(/\.[^.]+$/, ''),
+    source,
+  ]),
+);
 
 const copy = {
   fr: {
@@ -53,18 +71,6 @@ const copy = {
         ['React.js', 'Material UI', 'CI/CD'],
       ],
       [
-        'PetherCorp',
-        'Application web interne',
-        'Interfaces, optimisation du code et principes Clean Code.',
-        ['React.js', 'Clean Code', 'CI/CD'],
-      ],
-      [
-        'Gestion des collectes',
-        'Plateforme de données terrain',
-        'Gestion des collectes avec authentification JWT sécurisée.',
-        ['Laravel', 'JWT', 'PHP', 'MySQL'],
-      ],
-      [
         'MybestHealth',
         'Plateforme e-santé & API',
         'Pilotage Scrum, cahier des charges, API et architecture.',
@@ -77,10 +83,46 @@ const copy = {
         ['React.js', 'JavaScript'],
       ],
       [
-        'Suivi des techniciens',
-        'Application web terrain',
-        'Suivi des techniciens en intervention sur site.',
-        ['Front-end', 'Web', 'Télécoms'],
+        'Intellence Ruphin',
+        'Application React & Vite',
+        'Application web personnelle avec une interface moderne et une navigation multi-pages.',
+        ['React.js', 'JavaScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'SearchLyric',
+        'Moteur de recherche musical',
+        'Recherche de paroles de chansons depuis une interface React connectée à des services externes.',
+        ['React.js', 'JavaScript', 'Axios'],
+      ],
+      [
+        'Michelle & Patrick',
+        'Site RSVP de mariage',
+        'Site d’invitation et de confirmation de présence conçu pour un événement de mariage.',
+        ['React.js', 'TypeScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'Mon compagnon du Carême',
+        'Application d’accompagnement',
+        'Application web pensée pour accompagner les utilisateurs pendant le temps du Carême.',
+        ['React.js', 'TypeScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'Pokémon',
+        'Catalogue interactif',
+        'Application React pour explorer et consulter des informations sur les Pokémon.',
+        ['React.js', 'JavaScript', 'Axios'],
+      ],
+      [
+        'Anonymous',
+        'Application de messagerie',
+        'Interface web de messagerie anonyme avec navigation et retours utilisateurs.',
+        ['React.js', 'JavaScript', 'Vite', 'Axios'],
+      ],
+      [
+        'Country Woad',
+        'Jeu de géographie chronométré',
+        'Un jeu web où il faut deviner un pays en exactement deux minutes.',
+        ['Jeu web', 'Géographie', 'Chronomètre'],
       ],
     ],
   },
@@ -123,18 +165,6 @@ const copy = {
         ['React.js', 'Material UI', 'CI/CD'],
       ],
       [
-        'PetherCorp',
-        'Internal web application',
-        'Interfaces, optimization and Clean Code practices.',
-        ['React.js', 'Clean Code', 'CI/CD'],
-      ],
-      [
-        'Data Collection',
-        'Field data platform',
-        'Collection management with secure JWT authentication.',
-        ['Laravel', 'JWT', 'PHP', 'MySQL'],
-      ],
-      [
         'MybestHealth',
         'e-Health platform & APIs',
         'Scrum leadership, specifications, APIs and architecture.',
@@ -147,10 +177,46 @@ const copy = {
         ['React.js', 'JavaScript'],
       ],
       [
-        'Technician Tracking',
-        'Field web application',
-        'Tracking technicians during on-site assignments.',
-        ['Front-end', 'Web', 'Telecoms'],
+        'Intellence Ruphin',
+        'React & Vite application',
+        'Personal web application with a modern interface and multi-page navigation.',
+        ['React.js', 'JavaScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'SearchLyric',
+        'Music search engine',
+        'Song-lyric search interface built with React and external services.',
+        ['React.js', 'JavaScript', 'Axios'],
+      ],
+      [
+        'Michelle & Patrick',
+        'Wedding RSVP website',
+        'Invitation and attendance-confirmation website created for a wedding event.',
+        ['React.js', 'TypeScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'My Lenten companion',
+        'Companion application',
+        'Web application designed to support users during the Lenten season.',
+        ['React.js', 'TypeScript', 'Vite', 'Tailwind CSS'],
+      ],
+      [
+        'Pokémon',
+        'Interactive catalogue',
+        'React application for exploring and viewing Pokémon information.',
+        ['React.js', 'JavaScript', 'Axios'],
+      ],
+      [
+        'Anonymous',
+        'Messaging application',
+        'Anonymous messaging web interface with navigation and user feedback.',
+        ['React.js', 'JavaScript', 'Vite', 'Axios'],
+      ],
+      [
+        'Country Woad',
+        'Timed geography game',
+        'A web game where players have exactly two minutes to guess a country.',
+        ['Web game', 'Geography', 'Timer'],
       ],
     ],
   },
@@ -163,6 +229,7 @@ export default function Projects() {
   const [tech, setTech] = useState('all');
   const [view, setView] = useState('cards');
   const [page, setPage] = useState(1);
+  const [failedScreenshots, setFailedScreenshots] = useState({});
   const technologies = [...new Set(t.items.flatMap((item) => item[3]))].sort();
   const filtered = t.items
     .map((project, index) => ({ project, meta: metadata[index], index }))
@@ -173,9 +240,9 @@ export default function Projects() {
         (type === 'all' || meta?.type === type) &&
         (tech === 'all' || project[3].includes(tech)),
     );
-  const pages = Math.max(1, Math.ceil(filtered.length / 5));
+  const pages = Math.max(1, Math.ceil(filtered.length / 6));
   const current = Math.min(page, pages);
-  const visible = filtered.slice((current - 1) * 5, current * 5);
+  const visible = filtered.slice((current - 1) * 6, current * 6);
   const reset = () => {
     setSearch('');
     setType('all');
@@ -184,10 +251,16 @@ export default function Projects() {
   };
   return (
     <section className="projects section" id="projects">
-      <div className="section-heading">
+      <motion.div
+        className="section-heading"
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
         <p className="eyebrow">{t.kicker}</p>
         <h2>{t.title}</h2>
-      </div>
+      </motion.div>
       <div className="project-toolbar">
         <label className="project-search">
           <Search />
@@ -262,19 +335,49 @@ export default function Projects() {
         {filtered.length} {t.results}
       </div>
       <div className={`project-list ${view === 'list' ? 'list-view' : ''}`}>
-        {visible.map(({ project, meta, index }) => {
+        {visible.map(({ project, meta, index }, cardIndex) => {
           const online = meta?.type === 'personnel' && meta?.status === 'en_ligne' && meta?.url;
+          const screenshot = projectScreenshots[meta?.image];
+          const hasScreenshot = screenshot && !failedScreenshots[meta?.id];
+
           return (
-            <article className="project-card" key={meta?.id}>
-              <div className={`project-art art-${(index % 3) + 1}`}>
-                <span className="window-dot" />
-                <span className="window-dot" />
-                <span className="window-dot" />
-                <div className="mock-panel">
-                  <i />
-                  <i />
-                  <i />
-                </div>
+            <motion.article
+              className="project-card"
+              key={meta?.id}
+              variants={indexedReveal}
+              custom={cardIndex}
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+            >
+              <div
+                className={`project-art art-${(index % 3) + 1}${hasScreenshot ? ' has-screenshot' : ''}`}
+              >
+                {hasScreenshot ? (
+                  <img
+                    className="project-screenshot"
+                    src={screenshot}
+                    alt={`Aperçu du projet ${project[0]}`}
+                    loading="lazy"
+                    onError={() =>
+                      setFailedScreenshots((current) => ({
+                        ...current,
+                        [meta.id]: true,
+                      }))
+                    }
+                  />
+                ) : (
+                  <>
+                    <span className="window-dot" />
+                    <span className="window-dot" />
+                    <span className="window-dot" />
+                    <div className="mock-panel">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                  </>
+                )}
               </div>
               <div className="project-copy">
                 <span>{String(index + 1).padStart(2, '0')}</span>
@@ -300,7 +403,7 @@ export default function Projects() {
                   )}
                 </div>
               </div>
-            </article>
+            </motion.article>
           );
         })}
       </div>
@@ -310,7 +413,7 @@ export default function Projects() {
           <p>{t.none}</p>
         </div>
       )}
-      {filtered.length > 5 && (
+      {filtered.length > 6 && (
         <nav className="pagination">
           <button
             onClick={() => setPage((value) => Math.max(1, value - 1))}

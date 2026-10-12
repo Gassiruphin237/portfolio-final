@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { MotionConfig } from 'motion/react';
 import { LanguageProvider } from '../context/LanguageContext';
 import { useLanguage } from '../context/languageStore';
 import Navbar from './Navbar.jsx';
@@ -13,15 +14,22 @@ import '../App.css';
 
 function PortfolioContent() {
   const { lang } = useLanguage();
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  const handlePreloaderComplete = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
     <div className="site-shell">
-      <Preloader />
+      <Preloader onComplete={handlePreloaderComplete} />
       <Navbar />
       <main>
-        <Hero />
+        <Hero shouldAnimate={isLoaded} />
         <Services />
         <Projects />
         <Experience />
@@ -35,7 +43,9 @@ function PortfolioContent() {
 export default function PortfolioPage() {
   return (
     <LanguageProvider>
-      <PortfolioContent />
+      <MotionConfig reducedMotion="user">
+        <PortfolioContent />
+      </MotionConfig>
     </LanguageProvider>
   );
 }

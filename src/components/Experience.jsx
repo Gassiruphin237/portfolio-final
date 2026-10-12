@@ -1,8 +1,10 @@
 import { BookOpenCheck, ExternalLink } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import awsCertificate from '../assets/certifications/aws-cloud-practitioner-linkedin.png';
 import odcCertificate from '../assets/certifications/odc-certification.png';
 import scrumCertificate from '../assets/certifications/scrum-sfc-1198486.png';
+import { indexedReveal, reveal, revealViewport, timelineReveal } from './motionPresets';
 
 const certificateUrl = 'https://www.scrumstudy.com/certification/verify?type=SFC&number=1198486';
 const linkedInCertificateUrl = 'https://lnkd.in/eHsJ8Rg8';
@@ -107,25 +109,44 @@ export default function Experience() {
 
   return (
     <section className="journey section" id="journey">
-      <div className="section-heading">
+      <motion.div
+        className="section-heading"
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
         <p className="eyebrow">{t.kicker}</p>
         <h2>{t.title}</h2>
-      </div>
+      </motion.div>
 
       <div className="journey-grid">
         <div className="timeline">
-          {t.jobs.map((job) => (
-            <article key={job[0] + job[1]}>
+          {t.jobs.map((job, index) => (
+            <motion.article
+              key={job[0] + job[1]}
+              variants={timelineReveal}
+              custom={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+            >
               <span className="timeline-dot" />
               <time>{job[0]}</time>
               <h3>{job[1]}</h3>
               <p>{job[2]}</p>
-            </article>
+            </motion.article>
           ))}
         </div>
 
         <div>
-          <div className="stack-card">
+          <motion.div
+            className="stack-card"
+            variants={reveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={revealViewport}
+          >
             <div className="tech-heading">
               <p className="eyebrow">{t.label}</p>
               <span className="tech-orbit">
@@ -149,14 +170,20 @@ export default function Experience() {
                 </article>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           <div className="education-card" id="education">
-            <header className="education-heading">
+            <motion.header
+              className="education-heading"
+              variants={reveal}
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+            >
               <p className="eyebrow">{t.educationLabel}</p>
               <h3>{t.educationTitle}</h3>
               <p>{t.educationIntro}</p>
-            </header>
+            </motion.header>
             <div>
               {t.education.map((item, index) => {
                 const Icon = icons[index];
@@ -189,20 +216,33 @@ export default function Experience() {
                 );
 
                 return index >= 2 ? (
-                  <a
+                  <motion.a
                     className="education-item certificate-item"
                     href={certificateUrls[index - 2]}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${item[1]} — ${t.verify}`}
                     key={item[1]}
+                    variants={indexedReveal}
+                    custom={index}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={revealViewport}
                   >
                     {content}
-                  </a>
+                  </motion.a>
                 ) : (
-                  <article className="education-item" key={item[1]}>
+                  <motion.article
+                    className="education-item"
+                    key={item[1]}
+                    variants={indexedReveal}
+                    custom={index}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={revealViewport}
+                  >
                     {content}
-                  </article>
+                  </motion.article>
                 );
               })}
             </div>

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, Download, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import { sendEmail } from '../services/senEmail';
 import Recaptcha from './Recaptcha';
+import { reveal, revealViewport } from './motionPresets';
 
 const MIN_FILL_DURATION_MS = 3500;
 const SUBMISSION_COOLDOWN_MS = 60_000;
@@ -114,7 +116,13 @@ export default function ContactBanner() {
 
   return (
     <section className="contact section" id="contact">
-      <div className="contact-intro">
+      <motion.div
+        className="contact-intro"
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
         <p className="eyebrow">CONTACT</p>
         <h2>{t.title}</h2>
         <p>{t.intro}</p>
@@ -136,9 +144,16 @@ export default function ContactBanner() {
           <Download />
           {t.download}
         </a>
-      </div>
+      </motion.div>
 
-      <form className="contact-form" onSubmit={submit}>
+      <motion.form
+        className="contact-form"
+        onSubmit={submit}
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={revealViewport}
+        transition={{ duration: 0.42, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+      >
         <h3>{t.form}</h3>
         <label className="contact-honeypot" aria-hidden="true">
           Website
@@ -224,7 +239,7 @@ export default function ContactBanner() {
         {status === 'rate-limited' && <p className="form-error">{t.rateLimited}</p>}
         {status === 'captcha-required' && <p className="form-error">{t.captchaRequired}</p>}
         {status === 'error' && <p className="form-error">{t.error}</p>}
-      </form>
+      </motion.form>
     </section>
   );
 }

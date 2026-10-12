@@ -1,5 +1,7 @@
 import { Code2, Layers3, Server } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
+import { reveal, revealViewport, stagger } from './motionPresets';
 const copy = {
   fr: {
     title: 'Un seul partenaire.',
@@ -46,7 +48,13 @@ export default function Services() {
   const icons = [Code2, Server, Layers3];
   return (
     <section className="services section" id="expertise">
-      <div className="section-heading split">
+      <motion.div
+        className="section-heading split"
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
         <div>
           <p className="eyebrow">EXPERTISE</p>
           <h2>
@@ -56,22 +64,28 @@ export default function Services() {
           </h2>
         </div>
         <p>{t.intro}</p>
-      </div>
-      <div className="service-grid">
+      </motion.div>
+      <motion.div
+        className="service-grid"
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
         {t.items.map((item, index) => {
           const Icon = icons[index];
           return (
-            <article key={item[0]}>
+            <motion.article key={item[0]} variants={reveal}>
               <span>{item[0]}</span>
               <div className="service-symbol">
                 <Icon />
               </div>
               <h3>{item[1]}</h3>
               <p>{item[2]}</p>
-            </article>
+            </motion.article>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }
