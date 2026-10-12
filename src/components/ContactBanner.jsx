@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, Download, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useLanguage } from '../context/languageStore';
 import { sendEmail } from '../services/senEmail';
+import Recaptcha from './Recaptcha';
 
 const MIN_FILL_DURATION_MS = 3500;
 const SUBMISSION_COOLDOWN_MS = 60_000;
@@ -22,6 +23,9 @@ const copy = {
     sending: 'Envoi en cours…',
     sent: 'Merci, votre message a bien été envoyé.',
     rateLimited: 'Veuillez patienter une minute avant d’envoyer un nouveau message.',
+    captchaRequired: 'Validez la vérification anti-spam avant l’envoi.',
+    captchaMissing: 'La vérification anti-spam doit encore être configurée.',
+    captchaError: 'La vérification anti-spam n’a pas pu être chargée. Réessayez.',
     error: 'Impossible d’envoyer le message. Réessayez ou contactez-moi par e-mail.',
   },
   en: {
@@ -37,6 +41,9 @@ const copy = {
     sending: 'Sending…',
     sent: 'Thank you, your message has been sent.',
     rateLimited: 'Please wait one minute before sending another message.',
+    captchaRequired: 'Please complete the anti-spam verification before sending.',
+    captchaMissing: 'The anti-spam verification still needs to be configured.',
+    captchaError: 'The anti-spam verification could not be loaded. Please try again.',
     error: 'Your message could not be sent. Please try again or contact me by email.',
   },
 };
@@ -44,8 +51,12 @@ const copy = {
 export default function ContactBanner() {
   const { lang } = useLanguage();
   const [status, setStatus] = useState('idle');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [recaptchaError, setRecaptchaError] = useState(false);
+  const [recaptchaKey, setRecaptchaKey] = useState(0);
   const openedAt = useRef(0);
   const t = copy[lang];
+  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
   useEffect(() => {
     openedAt.current = Date.now();
@@ -70,6 +81,11 @@ export default function ContactBanner() {
       return;
     }
 
+    if (!recaptchaToken) {
+      setStatus('captcha-required');
+      return;
+    }
+
     setStatus('sending');
 
     try {
@@ -78,6 +94,7 @@ export default function ContactBanner() {
         email: data.get('email'),
         subject: data.get('subject'),
         message: data.get('message'),
+        recaptchaToken,
       });
 
       window.localStorage.setItem(LAST_SUBMISSION_KEY, String(Date.now()));
@@ -86,6 +103,10 @@ export default function ContactBanner() {
     } catch (error) {
       console.error(error);
       setStatus('error');
+    } finally {
+      setRecaptchaToken('');
+      setRecaptchaError(false);
+      setRecaptchaKey((currentKey) => currentKey + 1);
     }
   };
 
@@ -158,7 +179,36 @@ export default function ContactBanner() {
             disabled={status === 'sending'}
           />
         </label>
-        <button className="button contact-button" type="submit" disabled={status === 'sending'}>
+        {recaptchaSiteKey ? (
+          <Recaptcha
+            key={recaptchaKey}
+            siteKey={recaptchaSiteKey}
+            onToken={(token) => {
+              setRecaptchaToken(token);
+              setRecaptchaError(false);
+
+              if (status === 'captcha-required') {
+                setStatus('idle');
+              }
+            }}
+            onError={() => {
+              setRecaptchaToken('');
+              setRecaptchaError(true);
+            }}
+          />
+        ) : (
+          <p className="form-error">{t.captchaMissing}</p>
+        )}
+        {recaptchaSiteKey &&
+          !recaptchaToken &&
+          !recaptchaError &&
+          status !== 'captcha-required' && <p className="recaptcha-hint">{t.captchaRequired}</p>}
+        {recaptchaError && <p className="form-error">{t.captchaError}</p>}
+        <button
+          className="button contact-button"
+          type="submit"
+          disabled={status === 'sending' || !recaptchaToken || recaptchaError}
+        >
           {status === 'sending' ? t.sending : t.send}
           <Send />
         </button>
@@ -169,6 +219,7 @@ export default function ContactBanner() {
           </p>
         )}
         {status === 'rate-limited' && <p className="form-error">{t.rateLimited}</p>}
+        {status === 'captcha-required' && <p className="form-error">{t.captchaRequired}</p>}
         {status === 'error' && <p className="form-error">{t.error}</p>}
       </form>
     </section>

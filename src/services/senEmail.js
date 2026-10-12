@@ -26,6 +26,12 @@ function getEmailJsConfiguration() {
 
 export async function sendEmail({ name, email, subject, message, recaptchaToken }) {
   const { serviceId, templateId, publicKey } = getEmailJsConfiguration();
+  const normalizedRecaptchaToken = String(recaptchaToken ?? '').trim();
+
+  if (!normalizedRecaptchaToken) {
+    throw new Error('La vérification anti-spam est requise.');
+  }
+
   const templateParams = {
     from_name: String(name ?? '')
       .trim()
@@ -39,12 +45,8 @@ export async function sendEmail({ name, email, subject, message, recaptchaToken 
     message: String(message ?? '')
       .trim()
       .slice(0, 5000),
+    'g-recaptcha-response': normalizedRecaptchaToken,
   };
-
-  // Ajout du jeton reCAPTCHA s'il est fourni (requis si reCAPTCHA est activé sur EmailJS)
-  if (recaptchaToken) {
-    templateParams['g-recaptcha-response'] = recaptchaToken;
-  }
 
   if (Object.values(templateParams).some((value) => !value)) {
     throw new Error('Les champs du formulaire sont incomplets.');
