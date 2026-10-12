@@ -24,7 +24,7 @@ function getEmailJsConfiguration() {
   return configuration;
 }
 
-export async function sendEmail({ name, email, subject, message }) {
+export async function sendEmail({ name, email, subject, message, recaptchaToken }) {
   const { serviceId, templateId, publicKey } = getEmailJsConfiguration();
   const templateParams = {
     from_name: String(name ?? '')
@@ -40,6 +40,11 @@ export async function sendEmail({ name, email, subject, message }) {
       .trim()
       .slice(0, 5000),
   };
+
+  // Ajout du jeton reCAPTCHA s'il est fourni (requis si reCAPTCHA est activé sur EmailJS)
+  if (recaptchaToken) {
+    templateParams['g-recaptcha-response'] = recaptchaToken;
+  }
 
   if (Object.values(templateParams).some((value) => !value)) {
     throw new Error('Les champs du formulaire sont incomplets.');
