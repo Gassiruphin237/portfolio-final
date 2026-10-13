@@ -1,6 +1,7 @@
 .site-shell {
   min-height: 100vh;
-  overflow: hidden;
+  min-width: 0;
+  overflow-x: clip;
 }
 .navbar {
   height: 94px;
@@ -123,7 +124,7 @@
 }
 .hero h1 {
   font-size: clamp(52px, 5.4vw, 88px);
-  line-height: 0.99;
+  line-height: 1.04;
   letter-spacing: -0.065em;
   margin: 0;
   max-width: 860px;
@@ -680,6 +681,7 @@ footer {
   }
   .hero h1 {
     font-size: 49px;
+    line-height: 1.08;
   }
   .hero-intro {
     font-size: 16px;
@@ -2103,13 +2105,19 @@ footer {
   grid-template-columns: minmax(0, 0.92fr) minmax(460px, 1.08fr);
   align-items: stretch;
   gap: 20px;
+  width: 100%;
+  min-width: 0;
   max-width: 1452px;
-  margin-top: 96px;
-  margin-bottom: 80px;
+  margin: 96px auto 80px;
   padding: 0 34px;
   border: 0;
   background: transparent;
   color: var(--ink);
+}
+
+.contact-intro,
+.contact-form {
+  min-width: 0;
 }
 
 .contact-intro {
@@ -2293,7 +2301,8 @@ footer {
 
 @media (max-width: 900px) {
   .contact.section {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 
   .contact-intro {
@@ -2307,18 +2316,45 @@ footer {
 
 @media (max-width: 560px) {
   .contact.section {
-    margin-top: 64px;
-    padding: 0 20px;
+    margin: 64px auto 48px;
+    padding: 0 16px;
   }
 
   .contact-intro,
   .contact-form {
-    padding: 30px 24px;
+    padding: 28px 20px;
+  }
+
+  .contact-form h3 {
+    margin-bottom: 28px;
+    font-size: clamp(24px, 8vw, 30px);
+    overflow-wrap: anywhere;
   }
 
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .contact.section {
+    gap: 12px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .contact-intro,
+  .contact-form {
+    padding: 24px 16px;
+  }
+
+  .contact-form h3 {
+    font-size: 24px;
+  }
+
+  .recaptcha-control {
+    min-height: 144px;
   }
 }
 
@@ -2549,6 +2585,15 @@ footer {
     bottom: 18px;
     width: 44px;
     height: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .back-to-top {
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: 40px;
+    height: 40px;
   }
 }
 

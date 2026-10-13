@@ -72,6 +72,17 @@ export default function Recaptcha({ siteKey, onToken, onError, loadingLabel }) {
   const onTokenRef = useRef(onToken);
   const onErrorRef = useRef(onError);
   const [loading, setLoading] = useState(true);
+  const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 420px)').matches);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 420px)');
+    const updateSize = () => setCompact(mediaQuery.matches);
+
+    updateSize();
+    mediaQuery.addEventListener('change', updateSize);
+
+    return () => mediaQuery.removeEventListener('change', updateSize);
+  }, []);
 
   useEffect(() => {
     onTokenRef.current = onToken;
@@ -88,6 +99,7 @@ export default function Recaptcha({ siteKey, onToken, onError, loadingLabel }) {
         containerRef.current.innerHTML = '';
         widgetIdRef.current = recaptcha.render(containerRef.current, {
           sitekey: siteKey,
+          size: compact ? 'compact' : 'normal',
           callback: (token) => onTokenRef.current(token),
           'expired-callback': () => onTokenRef.current(''),
           'error-callback': () =>
@@ -111,7 +123,7 @@ export default function Recaptcha({ siteKey, onToken, onError, loadingLabel }) {
         window.grecaptcha.reset(widgetIdRef.current);
       }
     };
-  }, [siteKey]);
+  }, [compact, siteKey]);
 
   return (
     <div className="recaptcha-control" aria-live="polite">

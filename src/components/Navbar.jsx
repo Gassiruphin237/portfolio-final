@@ -11,6 +11,7 @@ export default function Navbar() {
   const { lang, setLang } = useLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [contactVisible, setContactVisible] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme = window.localStorage.getItem('portfolio-theme');
 
@@ -27,6 +28,21 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const contactSection = document.querySelector('#contact');
+
+    if (!contactSection || !('IntersectionObserver' in window)) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setContactVisible(entry.isIntersecting),
+      { threshold: 0 },
+    );
+
+    observer.observe(contactSection);
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -100,7 +116,7 @@ export default function Navbar() {
       </header>
 
       <button
-        className={`back-to-top${scrolled ? ' visible' : ''}`}
+        className={`back-to-top${scrolled && !contactVisible ? ' visible' : ''}`}
         type="button"
         onClick={scrollToTop}
         aria-label={lang === 'fr' ? 'Retour en haut' : 'Back to top'}
