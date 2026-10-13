@@ -3,8 +3,8 @@ import { ArrowRight, Code2, GitBranch, Layers3, Mail, MapPin, Server } from 'luc
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import heroImg from '../assets/hero.png';
-import heroTwoImg from '../assets/hero2.jpg';
-import heroThreeImg from '../assets/hero3.jpg';
+import heroTwoImg from '../assets/hero2.png';
+import heroThreeImg from '../assets/hero3.png';
 import { reveal, revealViewport, stagger } from './motionPresets';
 
 const copy = {
@@ -45,6 +45,7 @@ const copy = {
 };
 const profiles = [
   {
+    title: 'Ruphin Gassi',
     role: 'Full-stack developer',
     image: heroImg,
     imagePosition: 'center 10%',
@@ -54,21 +55,23 @@ const profiles = [
     ],
   },
   {
-    role: 'Front-end engineer',
+    title: 'JavaScript',
+    role: 'Interfaces web modernes',
     image: heroTwoImg,
     imagePosition: 'center 42%',
     details: [
-      [Code2, 'React.js · JavaScript'],
-      [MapPin, 'Douala, Cameroun'],
+      [Code2, 'React.js · Angular'],
+      [Layers3, 'Responsive · accessible'],
     ],
   },
   {
-    role: 'Back-end & API developer',
+    title: 'Azure DevOps',
+    role: 'CI/CD & déploiements',
     image: heroThreeImg,
     imagePosition: 'center 32%',
     details: [
-      [Server, 'C# · Node.js · SQL Server'],
-      [GitBranch, 'Azure DevOps · CI/CD'],
+      [GitBranch, 'Pipelines · Git'],
+      [Server, 'Tests · mise en production'],
     ],
   },
 ];
@@ -133,7 +136,7 @@ export default function Hero({ shouldAnimate }) {
                   />
                 </div>
                 <div className="profile-info">
-                  <h2>Ruphin Gassi</h2>
+                  <h2>{profile.title}</h2>
                   <p>{profile.role}</p>
                   {profile.details.map(([Icon, label]) => (
                     <span key={label}>

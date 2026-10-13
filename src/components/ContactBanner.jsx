@@ -140,7 +140,11 @@ export default function ContactBanner() {
             Douala, Cameroun
           </span>
         </div>
-        <a className="cv-link" href="/CV_Ruphin_Gassi_Nguefack_2026_MAJ.pdf" download>
+        <a
+          className="cv-link"
+          href="/CV%20Ruphin%20Gassi%20Nguefack.pdf"
+          download="CV_Ruphin_Gassi_Nguefack.pdf"
+        >
           <Download />
           {t.download}
         </a>
