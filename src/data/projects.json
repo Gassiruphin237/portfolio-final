@@ -42,6 +42,13 @@
     "image": "todo-list"
   },
   {
+    "id": "Financia",
+    "type": "personnel",
+    "status": "en_ligne",
+    "url": "https://www.financia.studio/",
+    "image": "financia"
+  },
+  {
     "id": "intellice-ruphin",
     "type": "personnel",
     "status": "en_ligne",

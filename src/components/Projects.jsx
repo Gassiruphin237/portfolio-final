@@ -84,6 +84,12 @@ const copy = {
         ['React.js', 'JavaScript'],
       ],
       [
+        'Financia',
+        'Site vitrine financier',
+        'PWA pour aider les utilisateurs à gérer leur activité financière.',
+        ['React.js', 'JavaScript', 'Vite'],
+      ],
+      [
         'Intellence Ruphin',
         'Application React & Vite',
         'Application web personnelle avec une interface moderne et une navigation multi-pages.',
@@ -176,6 +182,12 @@ const copy = {
         'Training application',
         'React project built after learning JavaScript ES6.',
         ['React.js', 'JavaScript'],
+      ],
+      [
+        'Financia',
+        'Financial showcase website',
+        'Modern website created to present Financia Studio’s identity and services.',
+        ['React.js', 'JavaScript', 'Vite'],
       ],
       [
         'Intellence Ruphin',
