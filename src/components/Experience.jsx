@@ -37,12 +37,12 @@ const copy = {
     intro:
       'Un écosystème moderne pour concevoir des interfaces, des API et des applications métiers fiables.',
     jobs: [
-      ['Fév. 2025 — Aujourd’hui', 'Softronic Innoving', 'Développeur Full-stack · CDI'],
-      ['Fév. 2024 — Fév. 2025', 'Innov SI', 'Développeur Full-stack · CDD'],
-      ['Avr. 2023 — Jan. 2024', 'Laureal Corp', 'Développeur Front-end · CDD'],
-      ['Août 2022 — Mars 2023', 'Orange Digital Center', 'Chef de projet & Développeur Back-end'],
-      ['Juin — Oct. 2021', 'Orange Digital Center', 'Apprenant à l’école du code'],
-      ['Août — Oct. 2020', 'TELIS LTD', 'Technicien Réseaux & Développeur Front-end'],
+      ['Fév. 2025 — Aujourd’hui', 'Africa Cloud', 'Développeur Full-stack · CDI']
+      // ['Fév. 2024 — Fév. 2025', 'Innov SI', 'Développeur Full-stack · CDD'],
+      // ['Avr. 2023 — Jan. 2024', 'Laureal Corp', 'Développeur Front-end · CDD'],
+      // ['Août 2022 — Mars 2023', 'Orange Digital Center', 'Chef de projet & Développeur Back-end'],
+      // ['Juin — Oct. 2021', 'Orange Digital Center', 'Apprenant à l’école du code'],
+      // ['Août — Oct. 2020', 'TELIS LTD', 'Technicien Réseaux & Développeur Front-end'],
     ],
     education: [
       ['2021 — 2022', 'Licence Technologique en Génie Logiciel', 'IUT · Université de Douala'],
