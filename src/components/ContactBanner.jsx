@@ -142,7 +142,7 @@ export default function ContactBanner() {
         </div>
         <a
           className="cv-link"
-          href="/CV%20Ruphin%20Gassi%20Nguefack.pdf"
+          href="/CV%20Ruphin%20Gassi%20Ngsuefack.pdf"
           download="CV_Ruphin_Gassi_Nguefack.pdf"
         >
           <Download />
