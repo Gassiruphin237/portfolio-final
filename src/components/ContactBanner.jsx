@@ -12,7 +12,7 @@ const LAST_SUBMISSION_KEY = 'portfolio-contact-last-submission';
 
 const copy = {
   fr: {
-    title: 'Vous avez un produit à construire ?',
+    title: 'Vous avez un Projet à réaliser ?',
     intro:
       'Parlons de votre besoin, de vos contraintes et de la meilleure façon de passer à l’action.',
     download: 'Télécharger mon CV',

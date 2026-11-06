@@ -2,12 +2,14 @@ import { BookOpenCheck, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import awsCertificate from '../assets/certifications/aws-cloud-practitioner-linkedin.png';
+import iaCertificate from '../assets/certifications/ia-google.png';
 import odcCertificate from '../assets/certifications/odc-certification.png';
 import scrumCertificate from '../assets/certifications/scrum-sfc-1198486.png';
 import { indexedReveal, reveal, revealViewport, timelineReveal } from './motionPresets';
 
 const certificateUrl = 'https://www.scrumstudy.com/certification/verify?type=SFC&number=1198486';
 const linkedInCertificateUrl = 'https://lnkd.in/eHsJ8Rg8';
+const iaCertificateUrl = 'https://coursera.org/verify/QGP8V766DP8F';
 
 const technologies = [
   ['React.js', 'react/react-original.svg', 'Front-end'],
@@ -54,6 +56,7 @@ const copy = {
         'LinkedIn Learning · AWS Cloud',
       ],
       ['23 décembre 2021', 'Développement Web avec ASP', 'Orange Digital Center'],
+      ['31 juillet 2026', 'Introduction to AI', 'Coursera · Google'],
     ],
     verify: 'Vérifier la certification',
     educationLabel: 'FORMATION',
@@ -92,6 +95,7 @@ const copy = {
         'LinkedIn Learning · AWS Cloud',
       ],
       ['December 23, 2021', 'Web Development with ASP', 'Orange Digital Center'],
+      ['July 31, 2026', 'Introduction to AI', 'Coursera · Google'],
     ],
     verify: 'Verify certification',
     educationLabel: 'EDUCATION',
@@ -103,9 +107,9 @@ const copy = {
 export default function Experience() {
   const { lang } = useLanguage();
   const t = copy[lang];
-  const icons = [BookOpenCheck, BookOpenCheck, BookOpenCheck, BookOpenCheck, BookOpenCheck];
-  const certificateImages = [scrumCertificate, awsCertificate, odcCertificate];
-  const certificateUrls = [certificateUrl, linkedInCertificateUrl, odcCertificate];
+  const icons = [BookOpenCheck, BookOpenCheck, BookOpenCheck, BookOpenCheck, BookOpenCheck, BookOpenCheck];
+  const certificateImages = [scrumCertificate, awsCertificate, odcCertificate, iaCertificate];
+  const certificateUrls = [certificateUrl, linkedInCertificateUrl, odcCertificate, iaCertificateUrl];
 
   return (
     <section className="journey section" id="journey">
