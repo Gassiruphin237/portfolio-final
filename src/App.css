@@ -399,15 +399,15 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  height: 72cqw;           /* taller on mobile for bigger cards */
-  perspective: 72cqw;
+  height: 52cqw;
+  perspective: 52cqw;
   perspective-origin: 50% 50%;
   position: relative;
 }
 
 @media (min-width: 768px) {
   .cgh-track {
-    height: 34cqw;         /* taller on desktop too */
+    height: 34cqw;
   }
 }
 
@@ -596,13 +596,32 @@
 
 @media (max-width: 760px) {
   .cgh-section {
-    padding-top: 82px;
-    padding-bottom: 36px;
+    padding-top: 32px;
+    padding-bottom: 12px;
   }
 
   .cgh-header {
     padding-left: 20px;
     padding-right: 20px;
+    gap: 0;
+  }
+
+  .cgh-badge {
+    margin-bottom: 0.45rem;
+  }
+
+  .cgh-heading {
+    margin-bottom: 0.4rem;
+  }
+
+  .cgh-desc {
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .cgh-stage-wrap {
+    margin-top: 0.6rem;
+    padding-bottom: 0.25rem;
   }
 
   .cgh-lightbox {

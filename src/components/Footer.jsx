@@ -41,7 +41,7 @@ export default function Footer() {
             {
               heading: 'Ressources',
               links: [
-                { label: 'Télécharger le CV', href: '/CV Ruphin Gassi Nguefack.pdf', download: true },
+                { label: 'Télécharger le CV', href: '/CV Ruphin Gasssi Nguefack.pdf', download: true },
                 { label: 'GitHub', href: 'https://github.com/Gassiruphin237', external: true },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ruphin-gassi-a401751a5/', external: true },
               ],
@@ -86,7 +86,7 @@ export default function Footer() {
             {
               heading: 'Resources',
               links: [
-                { label: 'Download CV', href: '/CV Ruphin Gassi Nguefack.pdf', download: true },
+                { label: 'Download CV', href: '/CV Ruphin Gasssi Nguefack.pdf', download: true },
                 { label: 'GitHub', href: 'https://github.com/Gassiruphin237', external: true },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ruphin-gassi-a401751a5/', external: true },
               ],
