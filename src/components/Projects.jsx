@@ -21,7 +21,6 @@ const projectScreenshotModules = import.meta.glob('../assets/projects/*.{avif,jp
   query: '?url',
 });
 
-
 const projectScreenshots = Object.fromEntries(
   Object.entries(projectScreenshotModules).map(([path, source]) => [
     path
