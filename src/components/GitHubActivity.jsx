@@ -130,22 +130,23 @@ function ContribHeatmap({ contributions, totalLabel }) {
   if (!contributions?.contributions) return null;
 
   const days = contributions.contributions;
+
   // Regrouper par semaine
-  const weeks = [];
+  const allWeeks = [];
   let week = [];
-  // Remplir les jours manquants au début (aligner sur dimanche)
   const firstDay = new Date(days[0]?.date);
-  const startOffset = firstDay.getDay(); // 0=dim
+  const startOffset = firstDay.getDay();
   for (let i = 0; i < startOffset; i++) week.push(null);
 
   for (const day of days) {
-    if (week.length === 7) { weeks.push(week); week = []; }
+    if (week.length === 7) { allWeeks.push(week); week = []; }
     week.push(day);
   }
-  if (week.length) weeks.push(week);
+  if (week.length) allWeeks.push(week);
 
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const days_fr = ['D','L','M','M','J','V','S'];
+  // Sur mobile on affiche les 20 dernières semaines (≈5 mois)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+  const weeks = isMobile ? allWeeks.slice(-20) : allWeeks;
 
   return (
     <div className="gh-heatmap-wrap">
@@ -153,7 +154,7 @@ function ContribHeatmap({ contributions, totalLabel }) {
         <strong>{contributions.total?.lastYear ?? contributions.total}</strong>
         <span>{totalLabel}</span>
       </div>
-      <div className="gh-heatmap-grid-outer">
+      <div className={`gh-heatmap-grid-outer${isMobile ? ' gh-heatmap-scroll' : ''}`}>
         <div className="gh-heatmap-grid">
           {weeks.map((w, wi) => (
             <div key={wi} className="gh-heatmap-week">

@@ -3365,10 +3365,22 @@
   overflow-x: hidden;
 }
 
+/* Mode scroll sur mobile — activé via la classe .gh-heatmap-scroll */
+.gh-heatmap-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .gh-heatmap-grid {
   display: flex;
   gap: 3px;
   width: 100%;
+}
+
+/* Sur mobile (scroll), les semaines ont une largeur fixe */
+.gh-heatmap-scroll .gh-heatmap-grid {
+  width: auto;
+  min-width: max-content;
 }
 
 .gh-heatmap-week {
@@ -3378,10 +3390,23 @@
   flex: 1;
 }
 
+/* Semaines en largeur fixe dans le mode scroll */
+.gh-heatmap-scroll .gh-heatmap-week {
+  flex: none;
+  width: 14px;
+}
+
 .gh-cell {
   width: 100%;
   aspect-ratio: 1;
   border-radius: 2px;
+}
+
+/* Cellules fixes dans le mode scroll */
+.gh-heatmap-scroll .gh-cell {
+  width: 14px;
+  height: 14px;
+  aspect-ratio: unset;
 }
 
 .gh-cell-empty {
