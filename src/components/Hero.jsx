@@ -5,7 +5,7 @@ import { useLanguage } from '../context/languageStore';
 import heroImg from '../assets/hero.png';
 import heroTwoImg from '../assets/hero2.png';
 import heroThreeImg from '../assets/hero3.png';
-import { reveal, revealViewport, stagger } from './motionPresets';
+import { reveal, revealViewport, sectionReveal, sectionViewport, stagger } from './motionPresets';
 
 const copy = {
   fr: {
@@ -86,7 +86,13 @@ export default function Hero({ shouldAnimate }) {
   const icons = [Layers3, Code2, MapPin, GitBranch];
   return (
     <>
-      <section className="hero section" id="home">
+      <motion.section
+        className="hero section"
+        id="home"
+        variants={sectionReveal}
+        initial="hidden"
+        animate={shouldAnimate ? 'visible' : 'hidden'}
+      >
         <motion.div
           className="hero-copy"
           variants={stagger}
@@ -159,7 +165,7 @@ export default function Hero({ shouldAnimate }) {
             ))}
           </div>
         </motion.div>
-      </section>
+      </motion.section>
       <motion.section
         className="proof-strip"
         variants={stagger}

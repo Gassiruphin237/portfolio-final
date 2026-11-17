@@ -1,7 +1,7 @@
 import { Code2, Layers3, Server } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
-import { reveal, revealViewport, stagger } from './motionPresets';
+import { reveal, revealViewport, sectionReveal, sectionViewport, stagger } from './motionPresets';
 const copy = {
   fr: {
     title: 'Un seul partenaire.',
@@ -47,7 +47,14 @@ export default function Services() {
   const t = copy[lang];
   const icons = [Code2, Server, Layers3];
   return (
-    <section className="services section" id="expertise">
+    <motion.section
+      className="services section"
+      id="expertise"
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={sectionViewport}
+    >
       <motion.div
         className="section-heading split"
         variants={reveal}
@@ -86,6 +93,6 @@ export default function Services() {
           );
         })}
       </motion.div>
-    </section>
+    </motion.section>
   );
 }

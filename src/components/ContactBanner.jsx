@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import { sendEmail } from '../services/senEmail';
 import Recaptcha from './Recaptcha';
-import { reveal, revealViewport } from './motionPresets';
+import { reveal, revealViewport, sectionReveal, sectionStagger, sectionViewport } from './motionPresets';
 
 const MIN_FILL_DURATION_MS = 3500;
 const SUBMISSION_COOLDOWN_MS = 60_000;
@@ -115,13 +115,17 @@ export default function ContactBanner() {
   };
 
   return (
-    <section className="contact section" id="contact">
+    <motion.section
+      className="contact section"
+      id="contact"
+      variants={sectionStagger}
+      initial="hidden"
+      whileInView="visible"
+      viewport={sectionViewport}
+    >
       <motion.div
         className="contact-intro"
-        variants={reveal}
-        initial="hidden"
-        whileInView="visible"
-        viewport={revealViewport}
+        variants={sectionReveal}
       >
         <p className="eyebrow">CONTACT</p>
         <h2>{t.title}</h2>
@@ -153,10 +157,8 @@ export default function ContactBanner() {
       <motion.form
         className="contact-form"
         onSubmit={submit}
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={revealViewport}
-        transition={{ duration: 0.42, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+        variants={sectionReveal}
+        transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
       >
         <h3>{t.form}</h3>
         <label className="contact-honeypot" aria-hidden="true">
@@ -244,6 +246,6 @@ export default function ContactBanner() {
         {status === 'captcha-required' && <p className="form-error">{t.captchaRequired}</p>}
         {status === 'error' && <p className="form-error">{t.error}</p>}
       </motion.form>
-    </section>
+    </motion.section>
   );
 }

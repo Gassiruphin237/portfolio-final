@@ -5,7 +5,7 @@ import awsCertificate from '../assets/certifications/aws-cloud-practitioner-link
 import iaCertificate from '../assets/certifications/ia-google.png';
 import odcCertificate from '../assets/certifications/odc-certification.png';
 import scrumCertificate from '../assets/certifications/scrum-sfc-1198486.png';
-import { indexedReveal, reveal, revealViewport, timelineReveal } from './motionPresets';
+import { indexedReveal, reveal, revealViewport, sectionReveal, sectionViewport, timelineReveal } from './motionPresets';
 
 const certificateUrl = 'https://www.scrumstudy.com/certification/verify?type=SFC&number=1198486';
 const linkedInCertificateUrl = 'https://lnkd.in/eHsJ8Rg8';
@@ -112,7 +112,14 @@ export default function Experience() {
   const certificateUrls = [certificateUrl, linkedInCertificateUrl, odcCertificate, iaCertificateUrl];
 
   return (
-    <section className="journey section" id="journey">
+    <motion.section
+      className="journey section"
+      id="journey"
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={sectionViewport}
+    >
       <motion.div
         className="section-heading"
         variants={reveal}
@@ -253,6 +260,6 @@ export default function Experience() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

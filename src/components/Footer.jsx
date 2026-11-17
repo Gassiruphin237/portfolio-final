@@ -1,5 +1,7 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
+import { sectionReveal, sectionViewport } from './motionPresets';
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
@@ -110,7 +112,13 @@ export default function Footer() {
         };
 
   return (
-    <footer className="site-footer">
+    <motion.footer
+      className="site-footer"
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={sectionViewport}
+    >
       {/* ── Top columns ── */}
       <div className="footer-top section">
         {t.cols.map((col) => (
@@ -205,6 +213,6 @@ export default function Footer() {
           </text>
         </svg>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

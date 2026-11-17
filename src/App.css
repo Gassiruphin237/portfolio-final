@@ -3217,3 +3217,411 @@
     transform: rotate(360deg);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GitHub Activity Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.gh-section {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+/* ── En-tête ──────────────────────────────────────────────────────────────── */
+
+.gh-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 52px;
+}
+
+.gh-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 14px;
+}
+
+.gh-heading {
+  font-size: clamp(2rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  margin: 0 0 18px;
+  max-width: 640px;
+}
+
+.gh-heading-line {
+  display: block;
+}
+
+.gh-desc {
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0;
+}
+
+/* ── Loading / error ──────────────────────────────────────────────────────── */
+
+.gh-status {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── Corps global ─────────────────────────────────────────────────────────── */
+
+.gh-body {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* ── Stats ────────────────────────────────────────────────────────────────── */
+
+.gh-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.gh-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.gh-stat:hover {
+  border-color: var(--terracotta);
+  transform: translateY(-3px);
+}
+
+.gh-stat-icon {
+  color: var(--terracotta);
+}
+
+.gh-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.gh-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Heatmap ──────────────────────────────────────────────────────────────── */
+
+.gh-heatmap-wrap {
+  padding: 28px 32px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.gh-heatmap-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.gh-heatmap-total strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.gh-heatmap-total span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.gh-heatmap-grid-outer {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.gh-heatmap-grid {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.gh-heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.gh-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 2px;
+}
+
+.gh-cell-empty {
+  background: transparent;
+}
+
+.gh-heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.gh-heatmap-legend .gh-cell {
+  width: 10px;
+  height: 10px;
+  aspect-ratio: unset;
+  flex-shrink: 0;
+}
+
+.gh-heatmap-legend .gh-cell {
+  width: 10px;
+  height: 10px;
+}
+
+/* ── Bas : langages + activité ────────────────────────────────────────────── */
+
+.gh-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.gh-sub-heading {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+/* Langages */
+
+.gh-langs {
+  padding: 28px 28px 24px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+
+.gh-lang-row {
+  display: grid;
+  grid-template-columns: 10px 100px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.gh-lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gh-lang-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gh-lang-bar-wrap {
+  height: 6px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.gh-lang-bar {
+  height: 100%;
+  background: var(--terracotta);
+  border-radius: 99px;
+}
+
+.gh-lang-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* Activité récente */
+
+.gh-activity {
+  padding: 28px 28px 24px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+
+.gh-event {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.gh-event:last-child {
+  border-bottom: 0;
+}
+
+.gh-event-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  background: #f5e9df;
+  border-radius: 6px;
+  color: var(--terracotta);
+  flex-shrink: 0;
+}
+
+.gh-event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.gh-event-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.gh-event-repo {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.18s;
+}
+
+.gh-event-repo:hover {
+  color: var(--terracotta);
+}
+
+.gh-event-time {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── Lien profil ──────────────────────────────────────────────────────────── */
+
+.gh-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--terracotta);
+  border: 1px solid var(--terracotta);
+  padding: 11px 22px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.gh-profile-link:hover {
+  background: var(--terracotta);
+  color: #fff;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────────── */
+
+:root[data-theme='dark'] .gh-stat,
+:root[data-theme='dark'] .gh-heatmap-wrap,
+:root[data-theme='dark'] .gh-langs,
+:root[data-theme='dark'] .gh-activity {
+  background: var(--paper);
+  border-color: var(--line);
+}
+
+:root[data-theme='dark'] .gh-event-icon {
+  background: #3b2720;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .gh-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gh-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .gh-section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .gh-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .gh-stat {
+    padding: 16px 18px;
+  }
+
+  .gh-stat-value {
+    font-size: 22px;
+  }
+
+  .gh-heatmap-wrap {
+    padding: 20px 18px;
+  }
+
+  .gh-langs,
+  .gh-activity {
+    padding: 20px 18px;
+  }
+
+  .gh-lang-row {
+    grid-template-columns: 10px 80px 1fr 24px;
+  }
+
+  .gh-header {
+    margin-bottom: 36px;
+  }
+}

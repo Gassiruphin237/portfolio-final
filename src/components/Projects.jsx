@@ -13,7 +13,7 @@ import {
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/languageStore';
 import metadata from '../data/projects.json';
-import { indexedReveal, reveal, revealViewport } from './motionPresets';
+import { indexedReveal, reveal, revealViewport, sectionReveal, sectionViewport } from './motionPresets';
 
 const projectScreenshotModules = import.meta.glob('../assets/projects/*.{avif,jpeg,jpg,png,webp}', {
   eager: true,
@@ -262,7 +262,14 @@ export default function Projects() {
     setPage(1);
   };
   return (
-    <section className="projects section" id="projects">
+    <motion.section
+      className="projects section"
+      id="projects"
+      variants={sectionReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={sectionViewport}
+    >
       <motion.div
         className="section-heading"
         variants={reveal}
@@ -450,6 +457,6 @@ export default function Projects() {
           </button>
         </nav>
       )}
-    </section>
+    </motion.section>
   );
 }

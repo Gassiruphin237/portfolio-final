@@ -7,6 +7,7 @@ import Hero from './Hero.jsx';
 import { CurvedGalleryHero } from './Gallery.jsx';
 import Services from './Services.jsx';
 import Projects from './Projects.jsx';
+import GitHubActivity from './GitHubActivity.jsx';
 import Experience from './Experience.jsx';
 import ContactBanner from './ContactBanner.jsx';
 import Footer from './Footer.jsx';
@@ -61,6 +62,7 @@ function PortfolioContent() {
         <CurvedGalleryHero items={galleryItems} status={galleryStatus} />
         <Services />
         <Projects />
+        <GitHubActivity />
         <Experience />
         <ContactBanner />
       </main>

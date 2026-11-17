@@ -9,8 +9,8 @@ const WhatsAppIcon = () => (
 );
 
 const copy = {
-  fr: { nav: ['Expertise', 'Galerie', 'Projets', 'Parcours', 'Études'], contact: 'Me contacter' },
-  en: { nav: ['Expertise', 'Gallery', 'Projects', 'Journey', 'Education'], contact: 'Contact me' },
+  fr: { nav: ['Expertise', 'Galerie', 'Projets', 'GitHub', 'Parcours', 'Études'], contact: 'Me contacter' },
+  en: { nav: ['Expertise', 'Gallery', 'Projects', 'GitHub', 'Journey', 'Education'], contact: 'Contact me' },
 };
 
 const WA_NUMBER = '237697814134';
@@ -71,8 +71,9 @@ export default function Navbar() {
           <a href="#expertise" onClick={() => setOpen(false)}>{t.nav[0]}</a>
           <a href="#gallery"   onClick={() => setOpen(false)}>{t.nav[1]}</a>
           <a href="#projects"  onClick={() => setOpen(false)}>{t.nav[2]}</a>
-          <a href="#journey"   onClick={() => setOpen(false)}>{t.nav[3]}</a>
-          <a href="#education" onClick={() => setOpen(false)}>{t.nav[4]}</a>
+          <a href="#github"    onClick={() => setOpen(false)}>{t.nav[3]}</a>
+          <a href="#journey"   onClick={() => setOpen(false)}>{t.nav[4]}</a>
+          <a href="#education" onClick={() => setOpen(false)}>{t.nav[5]}</a>
         </nav>
 
         <div className="nav-actions">
